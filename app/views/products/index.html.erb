@@ -13,17 +13,23 @@
 $(function () {
   $(".js-more").on('click', function() {
     // get the id from the data attribute
+    let result=""
     let id = $(this).data("id");
     $.get("/products/" + id + "/description", function(data) {
-     $("#info-"+id).text(data);
+      result+=data
+      console.log(result)
+       $.get("/products/"+id+"/inventory",function(data){
+        if(data==="true"){
+          result+=(" Available");
+        } else {
+          result+=("Sold Out");
+        }
+        console.log(result)
+        $("#info-"+id).text(result);
+      });
+      
     });
-    $.get("/products/"+id+"/inventory",function(data){
-      if(data==="true"){
-        $("#inv-"+id).text("Available");
-      } else {
-        $("#inv-"+id).text("Sold Out");
-      }
-    })
+    
   });
 });
 </script>
